@@ -3,6 +3,10 @@ import random
 from urllib.parse import urlparse
 from pathlib import Path
 
+import requests
+
+DEFAULT_FOLDER = "Files"
+
 
 def get_file_extention(url):
     parsed_url = urlparse(url)
@@ -13,10 +17,9 @@ def get_file_extention(url):
 
 
 def get_filename(url, folder):
-    default_folder = "Files"
 
     if not folder:
-        folder = default_folder
+        folder = DEFAULT_FOLDER
 
     Path(folder).mkdir(parents=True, exist_ok=True)
 
@@ -33,7 +36,9 @@ def get_filename(url, folder):
 
 def load_and_save_files(url, folder=None):
     filename = get_filename(url, folder)
-    print(filename)
 
-    # todo - Fetch image
-    # todo - Save image
+    response = requests.get(url)
+    response.raise_for_status()
+
+    with open(filename, "wb") as file:
+        file.write(response.content)
