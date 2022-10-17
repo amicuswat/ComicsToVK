@@ -12,8 +12,14 @@ def main():
     response = requests.get(CURRENT_COMMICS_URL)
     response.raise_for_status()
 
-    img_url = response.json()['img']
-    load_and_save_files(img_url)
+    comics = response.json()
+
+    # img_url = comics['img']
+    # load_and_save_files(img_url)
+
+    funny_comment = comics['alt']
+
+    print(funny_comment)
 
 
 if __name__ == "__main__":
