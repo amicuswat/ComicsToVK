@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from files_processing import load_and_save_files, get_one_file, get_all_files
 
 CURRENT_COMMICS_URL = "https://xkcd.com/info.0.json"
-
 BASE_VK_UPI_URL = 'https://api.vk.com/method/'
 
 VK_METHODS = {
@@ -17,9 +16,6 @@ VK_METHODS = {
         'save_photos': 'photos.saveWallPhoto',
         'wall_post': 'wall.post'
     }
-
-# specific commics url
-# https://xkcd.com/614/info.0.json
 
 
 def get_vk_photos_upload_url(vk_access_token, group_id):
@@ -140,6 +136,8 @@ def main():
                         group_id,
                         save_response,
                         funny_comment)
+
+    os.remove(comics_path)
 
 
 if __name__ == "__main__":
