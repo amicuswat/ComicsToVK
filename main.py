@@ -1,4 +1,5 @@
 import os
+import json
 
 import requests
 from dotenv import load_dotenv
@@ -11,7 +12,9 @@ BASE_VK_UPI_URL = 'https://api.vk.com/method/'
 
 VK_METHODS = {
         'get_groups': 'groups.get',
-        'photos_get_wall_upload_server': 'photos.getWallUploadServer'
+        'photos_get_wall_upload_server': 'photos.getWallUploadServer',
+        'save_photos': 'photos.saveWallPhoto',
+        'wall_post': 'wall.post'
     }
 
 # specific commics url
@@ -36,6 +39,37 @@ def get_vk_photos_upload_url(vk_access_token, group_id):
     return server_serialized['upload_url']
 
 
+def upload_photo_to_server(photo_path, upload_url):
+    with open(photo_path, "rb") as file:
+        files = {
+            "photo": file
+        }
+
+        response = requests.post(upload_url, files=files)
+        response.raise_for_status()
+
+    return response.json()
+
+
+def save_photo_on_server(vk_access_token, group_id, upload_response):
+    params = {
+        'access_token': vk_access_token,
+        'v': '5.131',
+        'group_id': group_id,
+        'server': upload_response['server'],
+        'photo': upload_response['photo'],
+        'hash': upload_response['hash']
+    }
+
+    url_with_method = f"{BASE_VK_UPI_URL}" \
+                      f"{VK_METHODS['save_photos']}"
+
+    response = requests.get(url_with_method, params=params)
+    response.raise_for_status()
+
+    return response.json()['response'][0]
+
+
 def load_random_comics():
     response = requests.get(CURRENT_COMMICS_URL)
     response.raise_for_status()
@@ -57,17 +91,25 @@ def main():
     group_id = '216541309'
 
     photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
-    comics = get_all_files("Files").pop()
-    print(comics)
 
-    with open(comics, "rb") as file:
+    comics_path = get_all_files("Files").pop()
 
-        files = {
-            "photo": file
-        }
+    upload_response = upload_photo_to_server(comics_path, photo_upload_url)
 
-        result = requests.post(photo_upload_url, files=files)
-        print(result.json())
+    save_response = save_photo_on_server(vk_access_token, group_id, upload_response)
+
+
+
+    print(json.dumps(save_response, indent=2))
+
+    attachments = {
+        'media_id': save_response['id'],
+        'owner_id': save_response['owner_id']
+    }
+    
+
+    print(attachments)
+
 
 
 
