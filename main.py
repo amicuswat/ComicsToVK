@@ -3,7 +3,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from files_processing import load_and_save_files, get_one_file
+from files_processing import load_and_save_files, get_one_file, get_all_files
 
 CURRENT_COMMICS_URL = "https://xkcd.com/info.0.json"
 
@@ -56,9 +56,19 @@ def main():
 
     group_id = '216541309'
 
-    # photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
-    comics = get_one_file("Files")
+    photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
+    comics = get_all_files("Files").pop()
     print(comics)
+
+    with open(comics, "rb") as file:
+
+        files = {
+            "photo": file
+        }
+
+        result = requests.post(photo_upload_url, files=files)
+        print(result.json())
+
 
 
 
