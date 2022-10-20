@@ -43,14 +43,24 @@ def load_and_save_files(url, folder=None):
     with open(filename, "wb") as file:
         file.write(response.content)
 
-def get_all_images(directory):
-    images_tree = list(os.walk(directory))
 
-    all_images = []
-    for elm in images_tree:
+def get_all_files(directory):
+    files_tree = list(os.walk(directory))
+
+    all_files = []
+    for elm in files_tree:
         path, subdirs, filenames = elm
         if filenames and not subdirs:
             for name in filenames:
-                all_images.append(os.path.join(path, name))
+                all_files.append(os.path.join(path, name))
 
-    return all_images
+    return all_files
+
+
+def get_one_file(directory):
+    one_file_path = get_all_files(directory).pop()
+
+    with open(one_file_path, 'rb') as file:
+        media = file.read()
+
+    return media
