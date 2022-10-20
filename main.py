@@ -1,11 +1,10 @@
 import os
 import random
-import json
 
 import requests
 from dotenv import load_dotenv
 
-from files_processing import load_and_save_files, get_one_file, get_all_files
+from files_processing import get_all_files, load_and_save_files
 
 CURRENT_COMMICS_URL = "https://xkcd.com/info.0.json"
 BASE_VK_UPI_URL = 'https://api.vk.com/method/'
@@ -118,20 +117,16 @@ def main():
     load_dotenv()
     vk_access_token = os.environ['VK_ACCESS_TOKEN']
 
-    group_id = '216541309'
+    group_id = os.environ['VK_GROUP_ID']''
 
     funny_comment = load_random_comics()
-
-    photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
-
     comics_path = get_all_files("Files").pop()
 
+    photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
     upload_response = upload_photo_to_server(comics_path, photo_upload_url)
-
     save_response = save_photo_on_server(vk_access_token,
                                          group_id,
                                          upload_response)
-
     send_comics_to_wall(vk_access_token,
                         group_id,
                         save_response,
