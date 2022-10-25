@@ -88,15 +88,11 @@ def send_comics_to_wall(vk_access_token, group_id, save_response, funny_comment)
     return response.json()
 
 
-def get_num_of_comics():
+def load_random_comics():
     response = requests.get(CURRENT_COMMICS_URL)
     response.raise_for_status()
 
-    return response.json()['num']
-
-
-def load_random_comics():
-    comics_limit = get_num_of_comics()
+    comics_limit = response.json()['num']
     comics_to_upload = random.randint(1, comics_limit)
 
     comics_url = f"https://xkcd.com/{comics_to_upload}/info.0.json"
