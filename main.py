@@ -88,7 +88,7 @@ def send_comics_to_wall(vk_access_token, group_id, save_response, funny_comment)
     return response.json()
 
 
-def load_random_comics():
+def download_random_comics():
     response = requests.get(CURRENT_COMMICS_URL)
     response.raise_for_status()
 
@@ -136,7 +136,7 @@ def main():
 
     group_id = os.environ['VK_GROUP_ID']
 
-    funny_comment, comics_img_path  = load_random_comics()
+    funny_comment, comics_img_path  = download_random_comics()
 
     photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
     upload_response = upload_photo_to_server(comics_img_path, photo_upload_url)
