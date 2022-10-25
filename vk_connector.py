@@ -18,9 +18,9 @@ def get_vk_photos_upload_url(vk_access_token, group_id):
     response = requests.get(url_with_method, params=params)
     response.raise_for_status()
 
-    server_serialized = response.json()['response']
+    upload_url = response.json()['response']['upload_url']
 
-    return server_serialized['upload_url']
+    return upload_url
 
 
 def upload_photo_to_server(photo_path, upload_url):
