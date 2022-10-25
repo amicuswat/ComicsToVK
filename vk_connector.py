@@ -1,5 +1,11 @@
+import requests
+
+BASE_VK_UPI_URL = 'https://api.vk.com/method/'
+
 
 def get_vk_photos_upload_url(vk_access_token, group_id):
+    vk_method = "photos.getWallUploadServer"
+
     params = {
         'access_token': vk_access_token,
         'v': '5.131',
@@ -7,7 +13,7 @@ def get_vk_photos_upload_url(vk_access_token, group_id):
     }
 
     url_with_method = f"{BASE_VK_UPI_URL}" \
-                      f"{VK_METHODS['photos_get_wall_upload_server']}"
+                      f"{vk_method}"
 
     response = requests.get(url_with_method, params=params)
     response.raise_for_status()
@@ -30,6 +36,8 @@ def upload_photo_to_server(photo_path, upload_url):
 
 
 def save_photo_on_server(vk_access_token, group_id, upload_response):
+    vk_method = "photos.saveWallPhoto"
+
     params = {
         'access_token': vk_access_token,
         'v': '5.131',
@@ -40,7 +48,7 @@ def save_photo_on_server(vk_access_token, group_id, upload_response):
     }
 
     url_with_method = f"{BASE_VK_UPI_URL}" \
-                      f"{VK_METHODS['save_photos']}"
+                      f"{vk_method}"
 
     response = requests.get(url_with_method, params=params)
     response.raise_for_status()
@@ -49,6 +57,8 @@ def save_photo_on_server(vk_access_token, group_id, upload_response):
 
 
 def send_comics_to_wall(vk_access_token, group_id, save_response, funny_comment):
+    vk_method = "wall.post"
+
     attachment = f"photo{save_response['owner_id']}_{save_response['id']}"
 
     params = {
@@ -61,7 +71,7 @@ def send_comics_to_wall(vk_access_token, group_id, save_response, funny_comment)
     }
 
     url_with_method = f"{BASE_VK_UPI_URL}" \
-                      f"{VK_METHODS['wall_post']}"
+                      f"{vk_method}"
 
     response = requests.post(url_with_method, params=params)
     response.raise_for_status()

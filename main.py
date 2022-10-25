@@ -6,19 +6,13 @@ from urllib.parse import urlparse
 import requests
 from dotenv import load_dotenv
 
+from vk_connector import get_vk_photos_upload_url, \
+    upload_photo_to_server, \
+    save_photo_on_server, \
+    send_comics_to_wall
+
 CURRENT_COMMICS_URL = "https://xkcd.com/info.0.json"
-BASE_VK_UPI_URL = 'https://api.vk.com/method/'
 DEFAULT_FOLDER = "Files"
-
-VK_METHODS = {
-        'get_groups': 'groups.get',
-        'photos_get_wall_upload_server': 'photos.getWallUploadServer',
-        'save_photos': 'photos.saveWallPhoto',
-        'wall_post': 'wall.post'
-    }
-
-
-
 
 
 def download_random_comics():
