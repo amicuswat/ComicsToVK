@@ -41,10 +41,10 @@ def upload_photo_to_server(photo_path, upload_url):
         files = {
             "photo": file
         }
-
         response = requests.post(upload_url, files=files)
-        response.raise_for_status()
-        check_for_error(response)
+
+    response.raise_for_status()
+    check_for_error(response)
 
     return response.json()
 
