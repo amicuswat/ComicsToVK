@@ -70,28 +70,27 @@ def main():
         photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
 
         upload_response = upload_photo_to_server(comic_img_path, photo_upload_url)
-
-        _server = upload_response['server']
-        _photo = upload_response['photo']
-        _hash = upload_response['hash']
-
-        save_response = save_photo_on_server(vk_access_token,
-                                             group_id,
-                                             _server,
-                                             _photo,
-                                             _hash)
-
-        _owner_id = save_response['owner_id']
-        _photo_id = save_response['id']
-
-        send_photo_to_wall(vk_access_token,
-                            group_id,
-                            _owner_id,
-                            _photo_id,
-                            funny_comment)
-
     finally:
         os.remove(comic_img_path)
+
+    _server = upload_response['server']
+    _photo = upload_response['photo']
+    _hash = upload_response['hash']
+
+    save_response = save_photo_on_server(vk_access_token,
+                                         group_id,
+                                         _server,
+                                         _photo,
+                                         _hash)
+
+    _owner_id = save_response['owner_id']
+    _photo_id = save_response['id']
+
+    send_photo_to_wall(vk_access_token,
+                        group_id,
+                        _owner_id,
+                        _photo_id,
+                        funny_comment)
 
 
 if __name__ == "__main__":
