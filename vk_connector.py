@@ -12,10 +12,10 @@ def get_vk_photos_upload_url(vk_access_token, group_id):
         'group_id': group_id
     }
 
-    url_with_method = f"{BASE_VK_UPI_URL}" \
-                      f"{vk_method}"
+    api_endpoint = f"{BASE_VK_UPI_URL}" \
+                   f"{vk_method}"
 
-    response = requests.get(url_with_method, params=params)
+    response = requests.get(api_endpoint, params=params)
     response.raise_for_status()
 
     upload_url = response.json()['response']['upload_url']
@@ -47,10 +47,10 @@ def save_photo_on_server(vk_access_token, group_id, upload_response):
         'hash': upload_response['hash']
     }
 
-    url_with_method = f"{BASE_VK_UPI_URL}" \
-                      f"{vk_method}"
+    api_endpoint = f"{BASE_VK_UPI_URL}" \
+                   f"{vk_method}"
 
-    response = requests.get(url_with_method, params=params)
+    response = requests.get(api_endpoint, params=params)
     response.raise_for_status()
 
     return response.json()['response'][0]
@@ -70,11 +70,10 @@ def send_comics_to_wall(vk_access_token, group_id, save_response, funny_comment)
         'message': funny_comment
     }
 
-    url_with_method = f"{BASE_VK_UPI_URL}" \
-                      f"{vk_method}"
+    api_endpoint = f"{BASE_VK_UPI_URL}" \
+                   f"{vk_method}"
 
-    response = requests.post(url_with_method, params=params)
+    response = requests.post(api_endpoint, params=params)
     response.raise_for_status()
 
     return response.json()
-
