@@ -21,9 +21,9 @@ def download_random_comic():
     response.raise_for_status()
 
     comics_limit = response.json()['num']
-    comic_to_upload = random.randint(1, comics_limit)
+    comic_num = random.randint(1, comics_limit)
 
-    comic_url = f"https://xkcd.com/{comic_to_upload}/info.0.json"
+    comic_url = f"https://xkcd.com/{comic_num}/info.0.json"
 
     response = requests.get(comic_url)
     response.raise_for_status()

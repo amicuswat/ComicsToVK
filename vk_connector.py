@@ -2,7 +2,7 @@ from http.client import HTTPException
 
 import requests
 
-BASE_VK_UPI_URL = 'https://api.vk.com/method/'
+BASE_VK_API_URL = 'https://api.vk.com/method/'
 
 
 class VKException(Exception):
@@ -24,7 +24,7 @@ def get_vk_photos_upload_url(vk_access_token, group_id):
         'group_id': group_id
     }
 
-    api_endpoint = f"{BASE_VK_UPI_URL}" \
+    api_endpoint = f"{BASE_VK_API_URL}" \
                    f"{vk_method}"
 
     response = requests.get(api_endpoint, params=params)
@@ -61,7 +61,7 @@ def save_photo_on_server(vk_access_token, group_id, _server, _photo, _hash):
         'hash': _hash
     }
 
-    api_endpoint = f"{BASE_VK_UPI_URL}" \
+    api_endpoint = f"{BASE_VK_API_URL}" \
                    f"{vk_method}"
 
     response = requests.get(api_endpoint, params=params)
@@ -85,7 +85,7 @@ def send_photo_to_wall(vk_access_token, group_id, _owner_id, _photo_id, funny_co
         'message': funny_comment
     }
 
-    api_endpoint = f"{BASE_VK_UPI_URL}" \
+    api_endpoint = f"{BASE_VK_API_URL}" \
                    f"{vk_method}"
 
     response = requests.post(api_endpoint, params=params)
