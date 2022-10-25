@@ -43,7 +43,9 @@ def upload_photo_to_server(photo_path, upload_url):
     response.raise_for_status()
     check_for_error(response)
 
-    return response.json()
+    unpacked_response = response.json()
+    return (unpacked_response['server'], unpacked_response['photo'],
+            unpacked_response['hash'])
 
 
 def save_photo_on_server(vk_access_token, group_id, _server, _photo, _hash):
@@ -64,7 +66,9 @@ def save_photo_on_server(vk_access_token, group_id, _server, _photo, _hash):
     response.raise_for_status()
     check_for_error(response)
 
-    return response.json()['response'][0]
+    unpacked_response = response.json()['response'][0]
+
+    return unpacked_response['owner_id'], unpacked_response['id']
 
 
 def send_photo_to_wall(vk_access_token, group_id, _owner_id, _photo_id,
