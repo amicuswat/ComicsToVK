@@ -45,7 +45,7 @@ def save_comic_img(url, folder=None):
 
     Path(folder).mkdir(parents=True, exist_ok=True)
 
-    parsed_url =  urlparse(url)
+    parsed_url = urlparse(url)
     filename = os.path.basename(parsed_url.path)
     file_path = Path(folder, filename)
 
@@ -64,7 +64,7 @@ def main():
 
     group_id = os.environ['VK_GROUP_ID']
 
-    funny_comment, comic_img_path  = download_random_comic()
+    funny_comment, comic_img_path = download_random_comic()
 
     try:
         photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
