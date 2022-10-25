@@ -89,8 +89,7 @@ def main():
                             _owner_id,
                             _photo_id,
                             funny_comment)
-    except ValueError as er:
-        print(er)
+
     finally:
         os.remove(comic_img_path)
 

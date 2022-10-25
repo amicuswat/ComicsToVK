@@ -1,6 +1,18 @@
+from http.client import HTTPException
+
 import requests
 
 BASE_VK_UPI_URL = 'https://api.vk.com/method/'
+
+
+class VKException(Exception):
+    pass
+
+
+def check_for_error(response):
+    response_serialized = response.json()
+    if 'error' in response_serialized:
+        raise VKException(response_serialized['error']['error_msg'])
 
 
 def get_vk_photos_upload_url(vk_access_token, group_id):
@@ -17,6 +29,7 @@ def get_vk_photos_upload_url(vk_access_token, group_id):
 
     response = requests.get(api_endpoint, params=params)
     response.raise_for_status()
+    check_for_error(response)
 
     upload_url = response.json()['response']['upload_url']
 
@@ -31,6 +44,7 @@ def upload_photo_to_server(photo_path, upload_url):
 
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
+        check_for_error(response)
 
     return response.json()
 
@@ -52,6 +66,7 @@ def save_photo_on_server(vk_access_token, group_id, _server, _photo, _hash):
 
     response = requests.get(api_endpoint, params=params)
     response.raise_for_status()
+    check_for_error(response)
 
     return response.json()['response'][0]
 
@@ -75,5 +90,6 @@ def send_photo_to_wall(vk_access_token, group_id, _owner_id, _photo_id, funny_co
 
     response = requests.post(api_endpoint, params=params)
     response.raise_for_status()
+    check_for_error(response)
 
     return response.json()
