@@ -35,16 +35,16 @@ def upload_photo_to_server(photo_path, upload_url):
     return response.json()
 
 
-def save_photo_on_server(vk_access_token, group_id, upload_response):
+def save_photo_on_server(vk_access_token, group_id, _server, _photo, _hash):
     vk_method = "photos.saveWallPhoto"
 
     params = {
         'access_token': vk_access_token,
         'v': '5.131',
         'group_id': group_id,
-        'server': upload_response['server'],
-        'photo': upload_response['photo'],
-        'hash': upload_response['hash']
+        'server': _server,
+        'photo': _photo,
+        'hash': _hash
     }
 
     api_endpoint = f"{BASE_VK_UPI_URL}" \
@@ -56,10 +56,10 @@ def save_photo_on_server(vk_access_token, group_id, upload_response):
     return response.json()['response'][0]
 
 
-def send_comics_to_wall(vk_access_token, group_id, save_response, funny_comment):
+def send_comics_to_wall(vk_access_token, group_id, _owner_id, _photo_id, funny_comment):
     vk_method = "wall.post"
 
-    attachment = f"photo{save_response['owner_id']}_{save_response['id']}"
+    attachment = f"photo{_owner_id}_{_photo_id}"
 
     params = {
         'access_token': vk_access_token,
