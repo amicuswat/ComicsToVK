@@ -6,10 +6,10 @@ from urllib.parse import urlparse
 import requests
 from dotenv import load_dotenv
 
-from vk_connector import get_vk_photos_upload_url, \
-    upload_photo_to_server, \
-    save_photo_on_server, \
-    send_photo_to_wall
+from vk_connector import get_vk_photos_upload_url
+from vk_connector import save_photo_on_server
+from vk_connector import send_photo_to_wall
+from vk_connector import upload_photo_to_server
 
 CURRENT_COMIC_URL = "https://xkcd.com/info.0.json"
 DEFAULT_FOLDER = "Files"
