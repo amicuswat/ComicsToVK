@@ -1,5 +1,4 @@
 import os
-import glob
 import random
 from pathlib import Path
 from urllib.parse import urlparse
@@ -69,7 +68,8 @@ def main():
     try:
         photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
 
-        upload_response = upload_photo_to_server(comic_img_path, photo_upload_url)
+        upload_response = upload_photo_to_server(comic_img_path,
+                                                 photo_upload_url)
     finally:
         os.remove(comic_img_path)
 
@@ -86,11 +86,8 @@ def main():
     _owner_id = save_response['owner_id']
     _photo_id = save_response['id']
 
-    send_photo_to_wall(vk_access_token,
-                        group_id,
-                        _owner_id,
-                        _photo_id,
-                        funny_comment)
+    send_photo_to_wall(vk_access_token, group_id, _owner_id, _photo_id,
+                       funny_comment)
 
 
 if __name__ == "__main__":
