@@ -11,34 +11,34 @@ from vk_connector import get_vk_photos_upload_url, \
     save_photo_on_server, \
     send_comics_to_wall
 
-CURRENT_COMMICS_URL = "https://xkcd.com/info.0.json"
+CURRENT_COMIC_URL = "https://xkcd.com/info.0.json"
 DEFAULT_FOLDER = "Files"
 
 
-def download_random_comics():
-    response = requests.get(CURRENT_COMMICS_URL)
+def download_random_comic():
+    response = requests.get(CURRENT_COMIC_URL)
     response.raise_for_status()
 
     comics_limit = response.json()['num']
-    comics_to_upload = random.randint(1, comics_limit)
+    comic_to_upload = random.randint(1, comics_limit)
 
-    comics_url = f"https://xkcd.com/{comics_to_upload}/info.0.json"
+    comic_url = f"https://xkcd.com/{comic_to_upload}/info.0.json"
 
-    response = requests.get(comics_url)
+    response = requests.get(comic_url)
     response.raise_for_status()
 
-    comics = response.json()
+    comic = response.json()
 
-    img_url = comics['img']
+    img_url = comic['img']
 
-    img_path = save_comics_img(img_url, DEFAULT_FOLDER)
+    img_path = save_comic_img(img_url, DEFAULT_FOLDER)
 
-    funny_comment = comics['alt']
+    funny_comment = comic['alt']
 
     return funny_comment, img_path
 
 
-def save_comics_img(url, folder=None):
+def save_comic_img(url, folder=None):
     if not folder:
         folder = DEFAULT_FOLDER
 
@@ -63,10 +63,10 @@ def main():
 
     group_id = os.environ['VK_GROUP_ID']
 
-    funny_comment, comics_img_path  = download_random_comics()
+    funny_comment, comic_img_path  = download_random_comic()
 
     photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
-    upload_response = upload_photo_to_server(comics_img_path, photo_upload_url)
+    upload_response = upload_photo_to_server(comic_img_path, photo_upload_url)
     save_response = save_photo_on_server(vk_access_token,
                                          group_id,
                                          upload_response)
@@ -75,7 +75,7 @@ def main():
                         save_response,
                         funny_comment)
 
-    os.remove(comics_img_path)
+    os.remove(comic_img_path)
 
 
 if __name__ == "__main__":
