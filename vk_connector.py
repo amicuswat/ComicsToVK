@@ -10,9 +10,9 @@ class VKException(Exception):
 
 
 def check_for_error(response):
-    response_serialized = response.json()
-    if 'error' in response_serialized:
-        raise VKException(response_serialized['error']['error_msg'])
+    unpacked_response = response.json()
+    if 'error' in response.json():
+        raise VKException(unpacked_response['error']['error_msg'])
 
 
 def get_vk_photos_upload_url(vk_access_token, group_id):
