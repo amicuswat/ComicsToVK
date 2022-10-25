@@ -56,7 +56,7 @@ def save_photo_on_server(vk_access_token, group_id, _server, _photo, _hash):
     return response.json()['response'][0]
 
 
-def send_comics_to_wall(vk_access_token, group_id, _owner_id, _photo_id, funny_comment):
+def send_photo_to_wall(vk_access_token, group_id, _owner_id, _photo_id, funny_comment):
     vk_method = "wall.post"
 
     attachment = f"photo{_owner_id}_{_photo_id}"

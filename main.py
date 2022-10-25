@@ -1,4 +1,5 @@
 import os
+import glob
 import random
 from pathlib import Path
 from urllib.parse import urlparse
@@ -9,7 +10,7 @@ from dotenv import load_dotenv
 from vk_connector import get_vk_photos_upload_url, \
     upload_photo_to_server, \
     save_photo_on_server, \
-    send_comics_to_wall
+    send_photo_to_wall
 
 CURRENT_COMIC_URL = "https://xkcd.com/info.0.json"
 DEFAULT_FOLDER = "Files"
@@ -65,30 +66,33 @@ def main():
 
     funny_comment, comic_img_path  = download_random_comic()
 
-    photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
+    try:
+        photo_upload_url = get_vk_photos_upload_url(vk_access_token, group_id)
 
-    upload_response = upload_photo_to_server(comic_img_path, photo_upload_url)
+        upload_response = upload_photo_to_server(comic_img_path, photo_upload_url)
 
-    _server = upload_response['server']
-    _photo = upload_response['photo']
-    _hash = upload_response['hash']
+        _server = upload_response['server']
+        _photo = upload_response['photo']
+        _hash = upload_response['hash']
 
-    save_response = save_photo_on_server(vk_access_token,
-                                         group_id,
-                                         _server,
-                                         _photo,
-                                         _hash)
+        save_response = save_photo_on_server(vk_access_token,
+                                             group_id,
+                                             _server,
+                                             _photo,
+                                             _hash)
 
-    _owner_id = save_response['owner_id']
-    _photo_id = save_response['id']
+        _owner_id = save_response['owner_id']
+        _photo_id = save_response['id']
 
-    send_comics_to_wall(vk_access_token,
-                        group_id,
-                        _owner_id,
-                        _photo_id,
-                        funny_comment)
-
-    os.remove(comic_img_path)
+        send_photo_to_wall(vk_access_token,
+                            group_id,
+                            _owner_id,
+                            _photo_id,
+                            funny_comment)
+    except ValueError as er:
+        print(er)
+    finally:
+        os.remove(comic_img_path)
 
 
 if __name__ == "__main__":
